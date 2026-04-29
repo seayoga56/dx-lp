@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Yoga | 日常に、美しい余白を。</title>
+   
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+   
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                        serif: ['"Noto Serif JP"', 'serif'],
+                    },
+                    colors: {
+                        primary: '#bfa5a4',      /* くすみローズ */
+                        primaryDark: '#a68b8a',
+                        secondary: '#8e978b',    /* セージグリーン */
+                        bgLight: '#f9f8f6',      /* ウォームホワイト */
+                        textMain: '#4a4443',     /* 柔らかいダークブラウン/グレー */
+                        textLight: '#7a7372',
+                    },
+                    letterSpacing: {
+                        widest: '.15em',
+                        superwide: '.2em',
+                    }
+                }
+            }
+        }
+    </script>
+   
+    <style>
+        /* ベーススタイル */
+        body {
+            background-color: #f9f8f6;
+            color: #4a4443;
+            overflow-x: hidden;
+        }
+
+        /* スクロールアニメーション */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* 有機的なシェイプ（AI的な直線を避ける工夫） */
+        .organic-shape {
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        }
+        .organic-shape-2 {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+        .organic-shape-3 {
+            border-radius: 30% 70% 50% 50% / 50% 40% 60% 50%;
+        }
+
+        /* ヒーロー画像のアニメーション */
+        @keyframes slowPan {
+            0% { transform: scale(1.05) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-1%, 1%); }
+        }
+        .hero-img {
+            animation: slowPan 25s infinite alternate ease-in-out;
+        }
+
+        /* ヘッダーのスクロール追従 */
+        .header-transition {
+            transition: all 0.4s ease;
+        }
+        .header-scrolled {
+            background-color: rgba(249, 248, 246, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* カスタムの波線セクション区切り */
+        .wave-divider {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: translateY(1px);
+        }
+        .wave-divider svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 60px;
+        }
+        .wave-divider .shape-fill {
+            fill: #f9f8f6;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-primary selection:text-white">
+
+    <!-- Header -->
+    <header id="header" class="fixed w-full top-0 z-50 py-6 header-transition">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+            <div class="text-2xl font-serif tracking-widest text-primaryDark cursor-pointer">
+                Lumina
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm tracking-widest">
+                <a href="#concept" class="hover:text-primary transition-colors duration-300">想い</a>
+                <a href="#features" class="hover:text-primary transition-colors duration-300">特徴</a>
+                <a href="#programs" class="hover:text-primary transition-colors duration-300">プログラム</a>
+                <a href="#faq" class="hover:text-primary transition-colors duration-300">よくあるご質問</a>
+            </nav>
+            <a href="#reserve" class="hidden md:inline-block bg-primary text-white px-6 py-3 rounded-full text-sm tracking-widest hover:bg-primaryDark transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5">
+                体験レッスンへ
+            </a>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-textMain focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden bg-bgLight">
+        <!-- Background elements -->
+        <div class="absolute top-20 -left-20 w-96 h-96 bg-primary opacity-5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 -right-20 w-96 h-96 bg-secondary opacity-5 rounded-full blur-3xl"></div>
+
+        <div class="max-w-6xl mx-auto px-6 w-full relative z-10 flex flex-col md:flex-row items-center">
+            <div class="w-full md:w-1/2 z-20 pt-20 md:pt-0">
+                <p class="text-secondary font-serif tracking-superwide text-sm mb-4 fade-in-up">FOR BEGINNERS</p>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif leading-tight mb-8 fade-in-up delay-100">
+                    日常に、<br>
+                    美しい<span class="text-primary italic">余白</span>を。
+                </h1>
+                <p class="text-textLight leading-relaxed mb-10 tracking-wide fade-in-up delay-200 max-w-md">
+                    忙しい日々の中で、ふと立ち止まる時間。<br>
+                    体が硬くても、運動から遠ざかっていても大丈夫。<br>
+                    ここは、あなたらしさを取り戻すための<br class="hidden md:block">上質なプライベート空間です。
+                </p>
+                <div class="fade-in-up delay-300">
+                    <a href="#reserve" class="inline-block bg-textMain text-white px-10 py-4 rounded-full tracking-widest hover:bg-primary transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        まずは体験してみる <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+           
+            <div class="w-full md:w-1/2 mt-16 md:mt-0 relative fade-in-up delay-200">
+                <div class="relative w-full aspect-[4/5] md:aspect-square max-w-lg mx-auto">
+                    <!-- 有機的な形状で画像を切り抜き -->
+                    <div class="w-full h-full overflow-hidden organic-shape shadow-2xl relative">
+                        <img src="https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?q=80&w=1000&auto=format&fit=crop" alt="リラックスしてヨガをする女性" class="w-full h-full object-cover hero-img">
+                        <div class="absolute inset-0 bg-primary opacity-10 mix-blend-multiply"></div>
+                    </div>
+                    <!-- 装飾 -->
+                    <div class="absolute -z-10 top-10 -right-10 w-full h-full border-px border-primary organic-shape-2 opacity-30"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Concept Section -->
+    <section id="concept" class="py-32 relative bg-white">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-serif mb-12 fade-in-up">
+                「頑張らない」から、<br class="md:hidden">美しくなれる。
+            </h2>
+            <div class="space-y-8 text-textLight leading-loose tracking-wide fade-in-up delay-100">
+                <p>
+                    ヨガスタジオと聞くと、<br class="md:hidden">「体が柔らかい人が行く場所」<br class="hidden md:block">
+                    「ストイックに汗を流す場所」<br class="md:hidden">というイメージがあるかもしれません。
+                </p>
+                <p>
+                    Luminaは、そんな敷居をそっと取り払いました。<br>
+                    ご用意したのは、初心者の方でも安心して体を預けられる少人数制のクラスと、<br class="hidden md:block">
+                    日常の喧騒を忘れさせる、ホテルのような上質なアメニティ空間。
+                </p>
+                <p>
+                    周りの目を気にせず、ただ自分の呼吸だけに耳を澄ます。<br>
+                    少しだけ贅沢で、とても心地よい時間を、あなたに。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-bgLight">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-20 fade-in-up">
+                <p class="text-primary tracking-widest text-sm mb-2 font-serif">OUR PROMISES</p>
+                <h2 class="text-3xl font-serif">Luminaが選ばれる理由</h2>
+            </div>
+
+            <div class="space-y-32">
+                <!-- Feature 1 -->
+                <div class="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+                    <div class="w-full md:w-1/2 fade-in-up">
+                        <div class="relative">
+                            <div class="w-full aspect-[4/3] overflow-hidden organic-shape-2 shadow-lg">
+                                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop" alt="少人数制のレッスン" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="absolute -top-6 -left-6 bg-white w-20 h-20 rounded-full flex items-center justify-center shadow-md font-serif text-2xl text-primary">01</div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 fade-in-up delay-100">
+                        <h3 class="text-2xl font-serif mb-6 leading-relaxed">「初めて」を優しく包み込む、<br>安心の少人数制。</h3>
+                        <p class="text-textLight leading-loose tracking-wide">
+                            ポーズの形にこだわる必要はありません。<br>
+                            最大6名までの少人数制なので、インストラクターが一人ひとりのお身体の状態に合わせて丁寧にサポートします。「体が硬くて恥ずかしい」という方も、ご自身のペースでゆっくりと始めていただけます。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 (Reverse) -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-20">
+                    <div class="w-full md:w-1/2 fade-in-up">
+                        <div class="relative">
+                            <div class="w-full aspect-[4/3] overflow-hidden organic-shape-3 shadow-lg">
+                                <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=1000&auto=format&fit=crop" alt="上質なアメニティ" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="absolute -bottom-6 -right-6 bg-white w-20 h-20 rounded-full flex items-center justify-center shadow-md font-serif text-2xl text-primary">02</div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 fade-in-up delay-100">
+                        <h3 class="text-2xl font-serif mb-6 leading-relaxed">ふと息をつける、<br>洗練された空間とアメニティ。</h3>
+                        <p class="text-textLight leading-loose tracking-wide">
+                            レッスン後も心地よい余韻を楽しんでいただけるよう、パウダールームにはオーガニックコスメや高品質なスキンケアアイテムをご用意。<br>
+                            日常から切り離された、まるでリゾートホテルのような空間で、心身ともにリフレッシュしていただけます。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+                    <div class="w-full md:w-1/2 fade-in-up">
+                        <div class="relative">
+                            <div class="w-full aspect-[4/3] overflow-hidden organic-shape shadow-lg">
+                                <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1000&auto=format&fit=crop" alt="リラックス" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="absolute -top-6 -right-6 bg-white w-20 h-20 rounded-full flex items-center justify-center shadow-md font-serif text-2xl text-primary">03</div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 fade-in-up delay-100">
+                        <h3 class="text-2xl font-serif mb-6 leading-relaxed">手ぶらでふらっと立ち寄れる、<br>身軽なシステム。</h3>
+                        <p class="text-textLight leading-loose tracking-wide">
+                            ヨガマット、厳選された素材のレンタルウェア、タオル、お水はすべてご用意しております。<br>
+                            お仕事帰りや、お出かけの合間に。「行きたい」と思ったその時に、荷物の準備を気にせずふらっと立ち寄れる気軽さを大切にしています。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="py-32 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <p class="text-secondary tracking-widest text-sm mb-2 font-serif">PROGRAMS</p>
+                <h2 class="text-3xl font-serif mb-6">あなたに合わせたプログラム</h2>
+                <p class="text-textLight">すべてのクラスが初心者対応。その日の気分でお選びください。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Program Card 1 -->
+                <div class="group bg-bgLight p-8 rounded-3xl transition-all duration-300 hover:bg-white hover:shadow-xl hover:-translate-y-2 border border-transparent hover:border-gray-100 fade-in-up">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-6 text-primary shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="text-xl font-serif mb-4">リラックス・アロマ</h3>
+                    <p class="text-textLight text-sm leading-relaxed mb-4">
+                        厳選された天然精油の香りに包まれながら、深い呼吸とともに凝り固まった筋肉をゆっくりとほぐしていきます。
+                    </p>
+                    <span class="text-xs text-primary font-medium tracking-wider px-3 py-1 bg-white rounded-full">運動量：★☆☆</span>
+                </div>
+
+                <!-- Program Card 2 -->
+                <div class="group bg-bgLight p-8 rounded-3xl transition-all duration-300 hover:bg-white hover:shadow-xl hover:-translate-y-2 border border-transparent hover:border-gray-100 fade-in-up delay-100">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-6 text-primary shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="text-xl font-serif mb-4">ベーシック・フロー</h3>
+                    <p class="text-textLight text-sm leading-relaxed mb-4">
+                        ヨガの基本的なポーズを、呼吸に合わせて流れるように行います。基礎から優しく学べるので、初めての方に最適です。
+                    </p>
+                    <span class="text-xs text-primary font-medium tracking-wider px-3 py-1 bg-white rounded-full">運動量：★★☆</span>
+                </div>
+
+                <!-- Program Card 3 -->
+                <div class="group bg-bgLight p-8 rounded-3xl transition-all duration-300 hover:bg-white hover:shadow-xl hover:-translate-y-2 border border-transparent hover:border-gray-100 fade-in-up delay-200">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-6 text-primary shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3 class="text-xl font-serif mb-4">ディープ・スリープ</h3>
+                    <p class="text-textLight text-sm leading-relaxed mb-4">
+                        自律神経を整え、質の高い睡眠へと導く夜限定のクラス。ブランケット等を使い、完全に身を委ねるポーズを中心に行います。
+                    </p>
+                    <span class="text-xs text-primary font-medium tracking-wider px-3 py-1 bg-white rounded-full">運動量：★☆☆</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action (CTA) -->
+    <section id="reserve" class="py-24 relative overflow-hidden">
+        <!-- 背景色と装飾 -->
+        <div class="absolute inset-0 bg-[#e8e2dd]"></div>
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#a68b8a 1px, transparent 1px); background-size: 30px 30px;"></div>
+       
+        <div class="max-w-3xl mx-auto px-6 relative z-10 text-center bg-white/60 backdrop-blur-md p-12 md:p-16 rounded-3xl shadow-lg fade-in-up">
+            <h2 class="text-3xl md:text-4xl font-serif mb-6">まずは、手ぶらで体験へ。</h2>
+            <p class="text-textLight leading-relaxed mb-10">
+                「私にもできるかな？」と迷ったら、<br class="md:hidden">まずは一度、空間を味わいに来てください。<br>
+                無理な勧誘などは一切ございません。
+            </p>
+           
+            <div class="bg-white rounded-2xl p-6 mb-10 shadow-sm inline-block w-full max-w-md">
+                <p class="text-sm text-textLight mb-2">手ぶら体験レッスン（ウェア・マット・タオル・水 込）</p>
+                <div class="flex items-baseline justify-center gap-2">
+                    <span class="text-4xl font-serif text-primary">¥3,300</span>
+                    <span class="text-sm text-textLight">(税込)</span>
+                </div>
+            </div>
+
+            <a href="#" class="inline-block w-full md:w-auto bg-textMain text-white px-12 py-5 rounded-full text-lg tracking-widest hover:bg-primary transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                体験レッスンを予約する
+            </a>
+            <p class="text-xs text-textLight mt-6">※Webからのご予約は24時間受け付けております。</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-16 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center md:items-start gap-10">
+            <div class="text-center md:text-left">
+                <div class="text-3xl font-serif tracking-widest text-primaryDark mb-4">Lumina</div>
+                <p class="text-sm text-textLight leading-relaxed">
+                    広島県内（開催場所はご予約時にお伝えします）<br>
+                    開催日時：不定期（スケジュールをご確認ください）
+                </p>
+            </div>
+           
+            <div class="flex gap-6">
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-textLight hover:text-primary hover:border-primary transition-colors">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://line.me/ja/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-textLight hover:text-primary hover:border-primary transition-colors">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-16 text-xs text-gray-400 tracking-wider">
+            &copy; 2024 Lumina Yoga Studio. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- スクロールアニメーション用スクリプト -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 要素のフェードイン監視
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -100px 0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // 一度表示されたら監視を解除（再度スクロールしてもアニメーションさせない場合）
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-up').forEach((el) => {
+                observer.observe(el);
+            });
+
+            // ヘッダーのスクロール追従
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-scrolled');
+                    header.classList.remove('py-6');
+                } else {
+                    header.classList.remove('header-scrolled');
+                    header.classList.add('py-6');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
